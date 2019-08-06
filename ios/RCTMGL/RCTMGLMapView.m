@@ -246,6 +246,7 @@ static double const M2PI = M_PI * 2;
     _reactStyleURL = reactStyleURL;
     [self _removeAllSourcesFromMap];
     self.styleURL = [self _getStyleURLFromKey:_reactStyleURL];
+    self.showsScale = true;
 }
 
 - (void)setReactPreferredFramesPerSecond:(NSInteger *)reactPreferredFramesPerSecond

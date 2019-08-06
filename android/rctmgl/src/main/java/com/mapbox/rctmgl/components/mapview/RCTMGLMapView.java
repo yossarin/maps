@@ -34,6 +34,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.UiSettings;
+import com.mapbox.pluginscalebar.ScaleBarOptions;
+import com.mapbox.pluginscalebar.ScaleBarPlugin;
 // import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.Layer;
@@ -108,6 +110,8 @@ public class RCTMGLMapView extends MapView implements
     private Boolean mLogoEnabled;
     private Boolean mCompassEnabled;
     private Boolean mZoomEnabled;
+
+    private ScaleBarPlugin mScaleBarPlugin;
 
     private MarkerViewManager markerViewManager;
 
@@ -423,6 +427,20 @@ public class RCTMGLMapView extends MapView implements
             }
         });
 
+        mScaleBarPlugin = new ScaleBarPlugin(this, mMap);
+
+        ScaleBarOptions scalebarOptions = new ScaleBarOptions(mContext)
+          // .setTextColor(R.color.mapbox_blue)
+          .setTextSize(30f)
+          .setBarHeight(7f)
+          .setBorderWidth(2f)
+          .setMetricUnit(true)
+          .setRefreshInterval(15)
+          .setMarginTop(30f)
+          .setMarginLeft(30f)
+          .setTextBarMargin(10f);
+
+        mScaleBarPlugin.create(scalebarOptions);
 
         /*mLocalizationPlugin = new LocalizationPlugin(this, mMap);
         if (mLocalizeLabels) {
