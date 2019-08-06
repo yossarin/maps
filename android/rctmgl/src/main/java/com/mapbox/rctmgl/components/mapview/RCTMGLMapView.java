@@ -34,6 +34,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.UiSettings;
+import com.mapbox.pluginscalebar.ScaleBarOptions;
+import com.mapbox.pluginscalebar.ScaleBarPlugin;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.android.gestures.MoveGestureDetector;
@@ -105,6 +107,8 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
     private Boolean mLogoEnabled;
     private Boolean mCompassEnabled;
     private Boolean mZoomEnabled;
+
+    private ScaleBarPlugin mScaleBarPlugin;
 
     private MarkerViewManager markerViewManager;
 
@@ -409,12 +413,27 @@ public class RCTMGLMapView extends MapView implements OnMapReadyCallback, Mapbox
             }
         });
 
+        ScaleBarOptions scalebarOptions = new ScaleBarOptions(mContext)
+          // .setTextColor(R.color.mapbox_blue)
+          .setTextSize(30f)
+          .setBarHeight(7f)
+          .setBorderWidth(2f)
+          .setMetricUnit(true)
+          .setRefreshInterval(15)
+          .setMarginTop(30f)
+          .setMarginLeft(30f)
+          .setTextBarMargin(10f);
+
+        mScaleBarPlugin = new ScaleBarPlugin(this, mMap);
+        mScaleBarPlugin.create(scalebarOptions);
+        
         mMap.addOnMoveListener(new MapboxMap.OnMoveListener() {
             @Override
             public void onMoveBegin(MoveGestureDetector detector) {
                 mCameraChangeTracker.setReason(CameraChangeTracker.USER_GESTURE);
                 handleMapChangedEvent(EventTypes.REGION_WILL_CHANGE);
             }
+
 
             @Override
             public void onMove(MoveGestureDetector detector) {
